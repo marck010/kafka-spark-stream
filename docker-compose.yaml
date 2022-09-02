@@ -2,6 +2,8 @@ version: "3"
 
 services:
   zookeeper:
+    volumes:
+      - zookeeper_data:/var/lib/zookeeper/data
     image: confluentinc/cp-zookeeper:latest
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
@@ -21,6 +23,8 @@ services:
       KAFKA_LISTENERS: INTERNAL://:9092,OUTSIDE://:9094
       KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,OUTSIDE://host.docker.internal:9094
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,OUTSIDE:PLAINTEXT
+    volumes:
+      - kafka_0_data:/var/lib/kafka/data
     extra_hosts:
       - "host.docker.internal:172.17.0.1"
 
@@ -91,3 +95,8 @@ services:
         sleep infinity
     extra_hosts:
       - "host.docker.internal:172.17.0.1"
+volumes:
+  zookeeper_data:
+    driver: local
+  kafka_0_data:
+    driver: local
